@@ -1,0 +1,11 @@
+{
+  "development": {
+    "driver": "pg",
+    "host": { "ENV": "ODDNAAN_PGHOST" },
+    "user": { "ENV": "ODDNAAN_PGUSER" },
+    "password": { "ENV": "ODDNAAN_PGPASSWORD" },
+    "database": { "ENV": "ODDNAAN_PGDATABASE" },
+    "port": { "ENV": "ODDNAAN_PGPORT" },
+    "native": true
+  }
+}

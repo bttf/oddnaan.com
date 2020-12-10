@@ -1,0 +1,29 @@
+version: "3"
+services:
+  api:
+    build: api
+    command: yarn dev
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: development
+      ODDNAAN_PORT: 3000
+      ODDNAAN_PGHOST: db
+      ODDNAAN_PGUSER: oddnaan-app
+      ODDNAAN_PGDATABASE: oddnaan
+      ODDNAAN_PGPASSWORD: coolpassword
+      ODDNAAN_PGPORT: 5432
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: coolpassword
+      POSTGRES_USER: oddnaan-app
+      POSTGRES_DB: oddnaan
+    ports:
+      - "15432:5432"
