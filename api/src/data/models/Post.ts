@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  Generated,
+  Index,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -8,38 +10,57 @@ import {
 } from "typeorm";
 import { User } from "./User";
 
+enum BodyFormats {
+  MARKDOWN = "markdown",
+  JSX = "jsx",
+  HTML = "html",
+  TEXT = "text",
+}
+
 @Entity()
-@Unique(["uuid"])
 export class Post {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column()
+  @Generated("uuid")
+  @Index({ unique: true })
   uuid!: string;
 
-  @Column()
+  @Column("text")
   title!: string;
 
-  @Column()
+  @Column("text")
   body!: string;
 
-  // TODO Check if TypeORM creates column as 'createdAt' or 'created_at'
-  // Force 'created_at' if needed, e.g. `@Column({ name: 'created_at' })`
-  @Column()
+  @Column({
+    type: "timestamptz",
+    default: () => "CURRENT_TIMESTAMP",
+    name: "created_at",
+  })
+  @Index()
   createdAt!: string;
 
-  // TODO Check if TypeORM creates column as 'createdAt' or 'created_at'
-  // Force 'created_at' if needed, e.g. `@Column({ name: 'created_at' })`
-  @Column()
+  @Column({
+    type: "timestamptz",
+    default: () => "CURRENT_TIMESTAMP",
+    name: "updated_at",
+  })
   updatedAt!: string;
 
-  @Column()
+  @Column({ type: "boolean", name: "is_published" })
+  @Index()
   isPublished!: boolean;
 
-  @Column()
+  @Column({
+    name: "body_format",
+    type: "enum",
+    enum: BodyFormats,
+    default: BodyFormats.MARKDOWN,
+  })
   bodyFormat!: "markdown" | "jsx" | "html" | "text";
 
   @OneToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: "author_id" })
   author!: User;
 }

@@ -7,6 +7,9 @@ import serve from "koa-static";
 import publicServer from "./publicServer";
 import privateServer from "./privateServer";
 
+// Bootstrap DB
+import "./data/bootstrap";
+
 const PORT = process.env.ODDNAAN_PORT || 3000;
 const app = new Koa();
 const router = new Router();

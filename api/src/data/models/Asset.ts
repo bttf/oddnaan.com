@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  Generated,
+  Index,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -9,29 +11,35 @@ import {
 import { User } from "./User";
 
 @Entity()
-@Unique(["uuid"])
 export class Asset {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column()
+  @Generated("uuid")
+  @Index({ unique: true })
   uuid!: string;
 
-  @Column()
+  @Column("text")
+  @Index()
   name!: string;
 
-  @Column()
+  @Column("text")
+  @Index()
   url!: string;
 
-  // TODO Check if TypeORM creates column as 'createdAt' or 'created_at'
-  // Force 'created_at' if needed, e.g. `@Column({ name: 'created_at' })`
-  @Column()
+  @Column({
+    type: "timestamptz",
+    default: () => "CURRENT_TIMESTAMP",
+    name: "created_at",
+  })
   createdAt!: string;
 
   @OneToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: "uploader_id" })
   uploader!: User;
 
-  @Column()
+  @Column({ type: "boolean", name: "is_private" })
+  @Index()
   isPrivate!: boolean;
 }
