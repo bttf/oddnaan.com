@@ -33,7 +33,7 @@ export default {
       await userRepo.save(user);
     } catch (e) {
       console.error("User creation failed", e);
-      return { errors: [e.messageDetail] };
+      return { errors: ["User creation failed"] };
     }
 
     return { createdUser: user };
