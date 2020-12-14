@@ -26,11 +26,7 @@ const Mutation = {
   // TODO Add type definition for `context`
   // TODO Add type definitino for `args`;
   // Can it be generated from LoginWithEmailInput graphql type?
-  loginWithEmail(_: any, args: any, context: any) {
-    // TODO do the thing
-
-    return {};
-  },
+  loginWithEmail: async (_: any, args: any, context: any) => {},
 };
 
 export default { Query, Mutation };

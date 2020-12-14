@@ -1,1 +1,3 @@
-export default {};
+import Mutation from "./Mutation";
+
+export default { Mutation };
