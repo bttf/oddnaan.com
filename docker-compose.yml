@@ -19,6 +19,7 @@ services:
       ODDNAAN_PGDATABASE: oddnaan
       ODDNAAN_PGPASSWORD: coolpassword
       ODDNAAN_PGPORT: 5432
+      ODDNAAN_AUTH_SECRET: m0n4l!s4
   db:
     image: postgres
     environment:
