@@ -10,9 +10,8 @@ services:
       - /app/node_modules
     depends_on:
       - api
-    environment:
-      ODDNAAN_GRAPHQL_ENDPOINT: "http://api:8801/graphql"
-      ODDNAAN_PUBLIC_GRAPHQL_ENDPOINT: "http://api:8801/public/graphql"
+    env_file:
+      - ./admin/.env.local
   api:
     build: api
     command: yarn dev

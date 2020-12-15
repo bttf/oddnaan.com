@@ -1,23 +1,28 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { LOCAL_STORAGE_TOKEN } from "./constants";
 import { onLogout } from "./auth";
 
-const {
-  ODDNAAN_GRAPHQL_ENDPOINT,
-  ODDNAAN_PUBLIC_GRAPHQL_ENDPOINT,
-} = process.env;
+const authLink = setContext((_, { headers }) => {
+  const token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN);
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
 
+// For more information on `NEXT_PUBLIC_` prefixes on env vars,
+// see https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables-to-the-browser
 export const client = new ApolloClient({
-  uri: ODDNAAN_GRAPHQL_ENDPOINT,
+  ssrMode: typeof window === "undefined",
+  link: authLink.concat(
+    new HttpLink({
+      uri: process.env.NEXT_PUBLIC_ODDNAAN_GRAPHQL_ENDPOINT,
+    })
+  ),
   cache: new InMemoryCache(),
-  request: (operation) => {
-    const token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN);
-    operation.setContext({
-      headers: {
-        authorization: token ? `Bearer ${token}` : "",
-      },
-    });
-  },
   onError: ({ graphQLErrors, networkErrors }) => {
     if (graphQLErrors) {
       const isUnauthorized =
@@ -45,6 +50,9 @@ export const client = new ApolloClient({
 });
 
 export const publicClient = new ApolloClient({
-  uri: ODDNAAN_PUBLIC_GRAPHQL_ENDPOINT,
+  ssrMode: typeof window === "undefined",
+  link: new HttpLink({
+    uri: process.env.NEXT_PUBLIC_ODDNAAN_PUBLIC_GRAPHQL_ENDPOINT,
+  }),
   cache: new InMemoryCache(),
 });

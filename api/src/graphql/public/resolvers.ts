@@ -45,7 +45,10 @@ const Mutation = {
     let user: UserModel | undefined;
 
     try {
-      user = await userRepo.findOne({ where: { email } });
+      // Match on either e-mail or username
+      user = await userRepo.findOne({
+        where: [{ email }, { username: email }],
+      });
     } catch (e) {
       console.error("Trouble finding user", e);
       return { errors: ["Unauthorized"] };
@@ -58,7 +61,7 @@ const Mutation = {
       }
 
       if (!user) {
-        console.error("No user found for email", email, user);
+        console.error("No user found for email/username", email, user);
         return { errors: ["Unauthorized"] };
       }
 
