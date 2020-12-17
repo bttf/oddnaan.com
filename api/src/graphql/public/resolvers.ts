@@ -8,9 +8,9 @@ const { ODDNAAN_AUTH_SECRET: AUTH_SECRET } = process.env;
 
 const Post = {
   // TODO Add type definition for `context`
-  author: (_post: PostModel, _args: any, context: any) => {
-    // fetch user here
-    return {};
+  author: (post: PostModel, _args: any, context: any) => {
+    // TODO Confirm this actually works; not sure given TypeORM docs
+    return post.author;
   },
 };
 
@@ -18,13 +18,13 @@ const Query = {
   // TODO Add type definition for `context`
   post: (_source: any, args: { uuid: string }, context: any) => {
     const { uuid } = args;
-    // find post by uuid
-    return {};
+    const postRepo = getRepository(PostModel);
+    return postRepo.findOne({ where: { uuid, isPublished: true } });
   },
   // TODO Add type definition for `context`
   posts: (_source: any, _args: any, context: any) => {
-    // find all posts
-    return [{}];
+    const postRepo = getRepository(PostModel);
+    return postRepo.find({ where: { isPublished: true } });
   },
 };
 

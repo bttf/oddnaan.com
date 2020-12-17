@@ -4,6 +4,7 @@ import {
   Generated,
   Index,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   Unique,
@@ -33,6 +34,7 @@ export class Post {
   @Column("text")
   body!: string;
 
+  // CreateDateColumn decorator is buggy
   @Column({
     type: "timestamptz",
     default: () => "CURRENT_TIMESTAMP",
@@ -60,7 +62,7 @@ export class Post {
   })
   bodyFormat!: "markdown" | "jsx" | "html" | "text";
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @JoinColumn({ name: "author_id" })
   author!: User;
 }

@@ -71,6 +71,7 @@ export default gql`
   input CreateAssetInput {
     name: String!
     url: String!
+    isPrivate: Boolean
   }
 
   type CreateAssetPayload {

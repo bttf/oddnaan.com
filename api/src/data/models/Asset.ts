@@ -4,6 +4,7 @@ import {
   Generated,
   Index,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   Unique,
@@ -28,6 +29,7 @@ export class Asset {
   @Index()
   url!: string;
 
+  // CreateDateColumn decorator is buggy
   @Column({
     type: "timestamptz",
     default: () => "CURRENT_TIMESTAMP",
@@ -35,7 +37,7 @@ export class Asset {
   })
   createdAt!: string;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @JoinColumn({ name: "uploader_id" })
   uploader!: User;
 
