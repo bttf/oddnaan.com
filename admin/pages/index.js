@@ -1,6 +1,15 @@
 import { useQuery } from "@apollo/client";
 import { format } from "date-fns";
-import { Checkbox, Heading, majorScale, Pane, Spinner } from "evergreen-ui";
+import {
+  AddIcon,
+  Checkbox,
+  Heading,
+  majorScale,
+  Pane,
+  Spinner,
+  Text,
+  UploadIcon,
+} from "evergreen-ui";
 import { ALL_ASSETS_QUERY, ALL_POSTS_QUERY } from "../lib/graphql/queries";
 // import styles from "../styles/Home.module.css";
 
@@ -93,7 +102,13 @@ export default function Dashboard() {
         <Heading size={900}>oddnaan.com</Heading>
       </Pane>
 
-      <Pane flex={1} display="flex" flexDirection="column" minHeight={0}>
+      <Pane
+        flex={1}
+        display="flex"
+        flexDirection="column"
+        minHeight={0}
+        position="relative"
+      >
         <Heading flexShrink={1} size={700} marginY={majorScale(2)}>
           posts
         </Heading>
@@ -104,7 +119,25 @@ export default function Dashboard() {
           flexDirection="column"
           alignItems="center"
           overflowY="scroll"
+          paddingBottom="64px"
         >
+          <Pane
+            position="absolute"
+            bottom={0}
+            left={0}
+            right={0}
+            background="greenTint"
+            padding={majorScale(2)}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            cursor="pointer"
+            zIndex={9}
+            onClick={() => alert("new post")}
+          >
+            <AddIcon color="success" marginX={majorScale(1)} />
+            <Text color="#47B881">New post</Text>
+          </Pane>
           {allPostsLoading ? (
             <Spinner />
           ) : (
@@ -113,10 +146,27 @@ export default function Dashboard() {
         </Pane>
       </Pane>
 
-      <Pane flex={1} display="flex" flexDirection="column">
+      <Pane flex={1} display="flex" flexDirection="column" position="relative">
         <Heading flexShrink={1} size={700} marginY={majorScale(2)}>
           assets
         </Heading>
+        <Pane
+          position="absolute"
+          bottom={0}
+          left={0}
+          right={0}
+          background="blueTint"
+          padding={majorScale(2)}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          cursor="pointer"
+          zIndex={9}
+          onClick={() => alert("upload asset")}
+        >
+          <UploadIcon color="info" marginX={majorScale(1)} />
+          <Text color="#1070CA">Upload asset</Text>
+        </Pane>
         <Pane
           flex={1}
           elevation={2}
