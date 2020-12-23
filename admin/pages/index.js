@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import { format } from "date-fns";
 import {
@@ -121,23 +122,24 @@ export default function Dashboard() {
           overflowY="scroll"
           paddingBottom="64px"
         >
-          <Pane
-            position="absolute"
-            bottom={0}
-            left={0}
-            right={0}
-            background="greenTint"
-            padding={majorScale(2)}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            cursor="pointer"
-            zIndex={9}
-            onClick={() => alert("new post")}
-          >
-            <AddIcon color="success" marginX={majorScale(1)} />
-            <Text color="#47B881">New post</Text>
-          </Pane>
+          <Link href="/posts/new">
+            <Pane
+              position="absolute"
+              bottom={0}
+              left={0}
+              right={0}
+              background="greenTint"
+              padding={majorScale(2)}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              cursor="pointer"
+              zIndex={9}
+            >
+              <AddIcon color="success" marginX={majorScale(1)} />
+              <Text color="#47B881">New post</Text>
+            </Pane>
+          </Link>
           {allPostsLoading ? (
             <Spinner />
           ) : (
