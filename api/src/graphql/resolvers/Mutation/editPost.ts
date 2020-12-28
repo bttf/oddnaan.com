@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 import { Post } from "src/data/models/Post";
+import { translateBodyFormatEnum } from "./createPost";
 
 export default async (
   _: any,
@@ -9,7 +10,7 @@ export default async (
       title: string;
       body: string;
       isPublished: boolean;
-      bodyFormat: "markdown" | "jsx" | "html" | "text";
+      bodyFormat: "MARKDOWN" | "JSX" | "HTML" | "TEXT";
     };
   },
   context: any
@@ -28,7 +29,9 @@ export default async (
         ...(title ? { title } : {}),
         ...(body ? { body } : {}),
         ...(isPublished != null ? { isPublished } : {}),
-        ...(bodyFormat ? { bodyFormat } : {}),
+        ...(bodyFormat
+          ? { bodyFormat: translateBodyFormatEnum(bodyFormat) }
+          : {}),
       })
       .where({ uuid })
       .returning(["uuid", "title", "body", "isPublished", "bodyFormat"])

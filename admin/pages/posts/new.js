@@ -1,36 +1,53 @@
 import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import marked from "marked";
 import { Button, majorScale, Pane, Text, TextInput } from "evergreen-ui";
-import { CREATE_POST } from "../../lib/graphql/mutations";
+import { CREATE_POST, EDIT_POST } from "../../lib/graphql/mutations";
 import "react-markdown-editor-lite/lib/index.css";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
 });
 
-export default function NewPost() {
+export default function NewPost({ post = {} }) {
   const titleRef = useRef(null);
-  const [title, setTitle] = useState("New post");
-  const [body, setBody] = useState("");
+  const router = useRouter();
+  const [title, setTitle] = useState(post.title || "New post");
+  const [body, setBody] = useState(post.body || "");
   const [savedAt, setSavedAt] = useState(null);
   const [createPostM] = useMutation(CREATE_POST);
+  const [editPostM] = useMutation(EDIT_POST);
 
   useEffect(() => {
-    if (titleRef) {
+    // Only select if this is a new post
+    if (titleRef && !post.uuid) {
       const el = titleRef.current;
       el.select();
     }
   }, [titleRef]);
 
-  const savePost = () => {
-    // call mutation here
-    createPostM({
-      variables: { title, body, bodyFormat: "MARKDOWN", isPublished: false },
-    });
+  const savePost = async () => {
+    if (post.uuid) {
+      editPostM({
+        variables: {
+          uuid: post.uuid,
+          title,
+          body,
+          bodyFormat: "MARKDOWN",
+        },
+      });
+    } else {
+      const createdPostRes = await createPostM({
+        variables: { title, body, bodyFormat: "MARKDOWN", isPublished: false },
+      });
+      const post = createdPostRes?.data?.createPost?.createdPost;
+      router.push(`/posts/${post.uuid}`);
+    }
   };
+
   /**
    * onChange
    *  - update local state
@@ -50,11 +67,6 @@ export default function NewPost() {
         <title>{title} - oddnaan admin</title>
       </Head>
       <Pane paddingX={majorScale(2)}>
-        {/**
-         * This needs to be a text input to populate the 'title' field
-         * - On pageload, highlight selection
-         * - should trigger autosave on change
-         */}
         <Pane display="flex" alignItems="center">
           <TextInput
             ref={titleRef}

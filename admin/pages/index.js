@@ -38,7 +38,7 @@ const PostRow = ({ post, index, onPublish }) => {
         alignItems="center"
         paddingX={majorScale(4)}
       >
-        {post.title}
+        <Link href={`/posts/${post.uuid}`}>{post.title}</Link>
       </Pane>
       <Pane flexShrink={1} paddingX={majorScale(1)}>
         <Checkbox
@@ -125,7 +125,6 @@ export default function Dashboard() {
   const { posts = [] } = allPostsData || {};
   const { assets = [] } = allAssetsData || {};
   const onPublish = (post, isPublished) => {
-    console.log("onPublish");
     editPostM({
       variables: { uuid: post.uuid, isPublished },
     });

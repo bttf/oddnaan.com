@@ -23,3 +23,17 @@ export const ALL_ASSETS_QUERY = gql`
     }
   }
 `;
+
+export const GET_POST_QUERY = gql`
+  query GetPost($uuid: String!) {
+    post(uuid: $uuid) {
+      uuid
+      title
+      body
+      createdAt
+      updatedAt
+      isPublished
+      bodyFormat
+    }
+  }
+`;
