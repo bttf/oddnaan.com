@@ -16,7 +16,11 @@ export default {
   },
   posts(_source: any, _args: any, context: any) {
     const postRepo = getRepository(PostModel);
-    return postRepo.find();
+    return postRepo.find({
+      order: {
+        createdAt: "DESC",
+      },
+    });
   },
   asset(_source: any, args: { uuid: string }, context: any) {
     const { uuid } = args;

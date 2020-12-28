@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { format } from "date-fns";
 import {
   AddIcon,
@@ -12,9 +12,10 @@ import {
   UploadIcon,
 } from "evergreen-ui";
 import { ALL_ASSETS_QUERY, ALL_POSTS_QUERY } from "../lib/graphql/queries";
+import { EDIT_POST } from "../lib/graphql/mutations";
 // import styles from "../styles/Home.module.css";
 
-const PostRow = ({ post, index }) => {
+const PostRow = ({ post, index, onPublish }) => {
   return (
     <Pane
       key={post.uuid}
@@ -27,6 +28,7 @@ const PostRow = ({ post, index }) => {
         display="flex"
         alignItems="center"
         paddingX={majorScale(1)}
+        width="182px"
       >
         {format(new Date(parseInt(post.createdAt, 10)), "p PP")}
       </Pane>
@@ -39,7 +41,11 @@ const PostRow = ({ post, index }) => {
         {post.title}
       </Pane>
       <Pane flexShrink={1} paddingX={majorScale(1)}>
-        <Checkbox checked={post.isPublished} label="published" />
+        <Checkbox
+          checked={post.isPublished}
+          onChange={(e) => onPublish(post, e.target.checked)}
+          label="published"
+        />
       </Pane>
     </Pane>
   );
@@ -83,6 +89,33 @@ export default function Dashboard() {
     data: allPostsData,
   } = useQuery(ALL_POSTS_QUERY);
 
+  const [editPostM] = useMutation(EDIT_POST, {
+    update(cache, res) {
+      const {
+        data: {
+          editPost: { editedPost, errors },
+        },
+      } = res || {};
+
+      if (!editedPost) {
+        console.log("Could not edit post", errors);
+      }
+
+      const { posts } = cache.readQuery({
+        query: ALL_POSTS_QUERY,
+      });
+
+      cache.writeQuery({
+        query: ALL_POSTS_QUERY,
+        data: {
+          posts: posts.map((p) =>
+            p.uuid === editedPost.uuid ? editedPost : p
+          ),
+        },
+      });
+    },
+  });
+
   const {
     loading: allAssetsLoading,
     error: allAssetsError,
@@ -91,6 +124,12 @@ export default function Dashboard() {
 
   const { posts = [] } = allPostsData || {};
   const { assets = [] } = allAssetsData || {};
+  const onPublish = (post, isPublished) => {
+    console.log("onPublish");
+    editPostM({
+      variables: { uuid: post.uuid, isPublished },
+    });
+  };
 
   return (
     <Pane
@@ -143,7 +182,9 @@ export default function Dashboard() {
           {allPostsLoading ? (
             <Spinner />
           ) : (
-            posts.map((p, i) => <PostRow post={p} index={i} />)
+            posts.map((p, i) => (
+              <PostRow post={p} index={i} onPublish={onPublish} />
+            ))
           )}
         </Pane>
       </Pane>
