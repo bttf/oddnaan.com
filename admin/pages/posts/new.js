@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import marked from "marked";
+import { format } from "date-fns";
 import { Button, majorScale, Pane, Text, TextInput } from "evergreen-ui";
 import { CREATE_POST, EDIT_POST } from "../../lib/graphql/mutations";
 import "react-markdown-editor-lite/lib/index.css";
@@ -17,7 +18,11 @@ export default function NewPost({ post = {} }) {
   const router = useRouter();
   const [title, setTitle] = useState(post.title || "New post");
   const [body, setBody] = useState(post.body || "");
-  const [savedAt, setSavedAt] = useState(null);
+  const [savedAt, setSavedAt] = useState(
+    post.updatedAt
+      ? format(new Date(parseInt(post.updatedAt, 10)), "p PP")
+      : null
+  );
   const [createPostM] = useMutation(CREATE_POST);
   const [editPostM] = useMutation(EDIT_POST);
 
@@ -31,7 +36,7 @@ export default function NewPost({ post = {} }) {
 
   const savePost = async () => {
     if (post.uuid) {
-      editPostM({
+      await editPostM({
         variables: {
           uuid: post.uuid,
           title,
@@ -46,6 +51,8 @@ export default function NewPost({ post = {} }) {
       const post = createdPostRes?.data?.createPost?.createdPost;
       router.push(`/posts/${post.uuid}`);
     }
+
+    setSavedAt(format(new Date(), "p PP"));
   };
 
   /**
@@ -92,7 +99,7 @@ export default function NewPost({ post = {} }) {
           justifyContent="flex-end"
           marginY={majorScale(2)}
         >
-          {savedAt && <Text>Saved 10:52:44 AM</Text>}
+          {savedAt && <Text>Saved {savedAt}</Text>}
           <Button
             marginX={majorScale(1)}
             onClick={() => (window.location.href = "/")}
