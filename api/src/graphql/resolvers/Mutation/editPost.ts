@@ -49,7 +49,7 @@ export default async (
       title: editedPost.title,
       body: editedPost.body,
       isPublished: editedPost.is_published,
-      bodyFormat: editedPost.body_format.toUpperCase(),
+      bodyFormat: editedPost.body_format,
     },
   };
 };

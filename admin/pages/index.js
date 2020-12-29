@@ -13,7 +13,6 @@ import {
 } from "evergreen-ui";
 import { ALL_ASSETS_QUERY, ALL_POSTS_QUERY } from "../lib/graphql/queries";
 import { EDIT_POST } from "../lib/graphql/mutations";
-// import styles from "../styles/Home.module.css";
 
 const PostRow = ({ post, index, onPublish }) => {
   return (

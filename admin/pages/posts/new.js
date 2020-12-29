@@ -20,7 +20,7 @@ export default function NewPost({ post = {} }) {
   const [body, setBody] = useState(post.body || "");
   const [savedAt, setSavedAt] = useState(
     post.updatedAt
-      ? format(new Date(parseInt(post.updatedAt, 10)), "p PP")
+      ? format(new Date(parseInt(post.updatedAt, 10)), "pp PP")
       : null
   );
   const [createPostM] = useMutation(CREATE_POST);
@@ -52,7 +52,7 @@ export default function NewPost({ post = {} }) {
       router.push(`/posts/${post.uuid}`);
     }
 
-    setSavedAt(format(new Date(), "p PP"));
+    setSavedAt(format(new Date(), "pp PP"));
   };
 
   /**
