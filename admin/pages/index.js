@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import Link from "next/link";
 import { useMutation, useQuery } from "@apollo/client";
 import { format } from "date-fns";
@@ -12,12 +13,11 @@ import {
   UploadIcon,
 } from "evergreen-ui";
 import { ALL_ASSETS_QUERY, ALL_POSTS_QUERY } from "../lib/graphql/queries";
-import { EDIT_POST } from "../lib/graphql/mutations";
+import { CREATE_ASSETS, EDIT_POST } from "../lib/graphql/mutations";
 
 const PostRow = ({ post, index, onPublish }) => {
   return (
     <Pane
-      key={post.uuid}
       width="100%"
       display="flex"
       background={index % 2 !== 0 ? undefined : "tint1"}
@@ -82,6 +82,8 @@ const AssetRow = ({ asset, index }) => {
 };
 
 export default function Dashboard() {
+  const fileInputRef = useRef(null);
+
   const {
     loading: allPostsLoading,
     error: allPostsError,
@@ -115,6 +117,8 @@ export default function Dashboard() {
     },
   });
 
+  const [createAssetsM] = useMutation(CREATE_ASSETS);
+
   const {
     loading: allAssetsLoading,
     error: allAssetsError,
@@ -123,9 +127,25 @@ export default function Dashboard() {
 
   const { posts = [] } = allPostsData || {};
   const { assets = [] } = allAssetsData || {};
+
   const onPublish = (post, isPublished) => {
     editPostM({
       variables: { uuid: post.uuid, isPublished },
+    });
+  };
+
+  // When user clicks 'Upload asset' div, simulate click on hidden file input element
+  const onUploadClick = () => {
+    if (fileInputRef) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const onFilesUploaded = (e) => {
+    createAssetsM({
+      variables: {
+        files: e.target.files,
+      },
     });
   };
 
@@ -181,7 +201,7 @@ export default function Dashboard() {
             <Spinner />
           ) : (
             posts.map((p, i) => (
-              <PostRow post={p} index={i} onPublish={onPublish} />
+              <PostRow key={p.uuid} post={p} index={i} onPublish={onPublish} />
             ))
           )}
         </Pane>
@@ -203,7 +223,7 @@ export default function Dashboard() {
           alignItems="center"
           cursor="pointer"
           zIndex={9}
-          onClick={() => alert("upload asset")}
+          onClick={onUploadClick}
         >
           <UploadIcon color="info" marginX={majorScale(1)} />
           <Text color="#1070CA">Upload asset</Text>
@@ -222,6 +242,15 @@ export default function Dashboard() {
             assets.map((a, i) => <AssetRow asset={a} index={i} />)
           )}
         </Pane>
+      </Pane>
+      <Pane display="none">
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          required
+          onChange={onFilesUploaded}
+        />
       </Pane>
     </Pane>
   );
