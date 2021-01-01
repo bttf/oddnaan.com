@@ -1,4 +1,5 @@
 import { from, ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { LOCAL_STORAGE_TOKEN } from "./constants";
@@ -45,7 +46,8 @@ export const client = new ApolloClient({
   link: from([
     authLink,
     errorLink,
-    new HttpLink({
+    // UploadLink used in place of HttpLink; see: https://github.com/jaydenseric/apollo-upload-client#setup
+    createUploadLink({
       uri: process.env.NEXT_PUBLIC_ODDNAAN_GRAPHQL_ENDPOINT,
     }),
   ]),
