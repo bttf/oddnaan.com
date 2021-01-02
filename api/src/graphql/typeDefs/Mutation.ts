@@ -68,21 +68,18 @@ export default gql`
     errors: [String!]
   }
 
-  input CreateAssetInput {
-    name: String!
-    url: String!
-    isPrivate: Boolean
+  input CreateAssetsInput {
+    files: [Upload!]!
   }
 
-  type CreateAssetPayload {
-    createdAsset: Asset
+  type CreateAssetsPayload {
+    createdAssets: [Asset!]
     errors: [String!]
   }
 
   input EditAssetInput {
     uuid: String!
     name: String
-    url: String
   }
 
   type EditAssetPayload {
@@ -108,7 +105,7 @@ export default gql`
     editUser(input: EditUserInput!): EditUserPayload
     deleteUser(input: DeleteUserInput!): DeleteUserPayload
 
-    createAsset(input: CreateAssetInput): CreateAssetPayload
+    createAssets(input: CreateAssetsInput): CreateAssetsPayload
     editAsset(input: EditAssetInput): EditAssetPayload
     deleteAsset(input: DeleteAssetInput): DeleteAssetPayload
   }

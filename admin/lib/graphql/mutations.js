@@ -59,3 +59,15 @@ export const EDIT_POST = gql`
     }
   }
 `;
+
+export const CREATE_ASSETS = gql`
+  mutation CreateAssets($files: [Upload!]!) {
+    createAssets(input: { files: $files }) {
+      createdAssets {
+        name
+        url
+      }
+      errors
+    }
+  }
+`;

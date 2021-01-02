@@ -6,7 +6,7 @@ import createUser from "./createUser";
 import editUser from "./editUser";
 import deleteUser from "./deleteUser";
 
-import createAsset from "./createAsset";
+import createAssets from "./createAssets";
 import editAsset from "./editAsset";
 import deleteAsset from "./deleteAsset";
 
@@ -17,7 +17,7 @@ export default {
   createUser,
   editUser,
   deleteUser,
-  createAsset,
+  createAssets,
   editAsset,
   deleteAsset,
 };
