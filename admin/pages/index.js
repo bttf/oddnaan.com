@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useMutation, useQuery } from "@apollo/client";
 import { format } from "date-fns";
@@ -63,6 +63,7 @@ const AssetRow = ({ asset, index }) => {
         display="flex"
         alignItems="center"
         paddingX={majorScale(1)}
+        width="182px"
       >
         {format(new Date(parseInt(asset.createdAt, 10)), "p PP")}
       </Pane>
@@ -75,7 +76,7 @@ const AssetRow = ({ asset, index }) => {
         <a href={asset.url}>{asset.name}</a>
       </Pane>
       <Pane flexShrink={1} paddingX={majorScale(1)}>
-        <Checkbox checked={asset.isPrivate} label="private" />
+        <Checkbox disabled checked={asset.isPrivate} label="private" />
       </Pane>
     </Pane>
   );
@@ -83,12 +84,20 @@ const AssetRow = ({ asset, index }) => {
 
 export default function Dashboard() {
   const fileInputRef = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const {
     loading: allPostsLoading,
     error: allPostsError,
     data: allPostsData,
   } = useQuery(ALL_POSTS_QUERY);
+
+  const {
+    loading: allAssetsLoading,
+    error: allAssetsError,
+    data: allAssetsData,
+    refetch: allAssetsRefetch,
+  } = useQuery(ALL_ASSETS_QUERY);
 
   const [editPostM] = useMutation(EDIT_POST, {
     update(cache, res) {
@@ -117,13 +126,22 @@ export default function Dashboard() {
     },
   });
 
-  const [createAssetsM] = useMutation(CREATE_ASSETS);
+  const [createAssetsM] = useMutation(CREATE_ASSETS, {
+    update(cache, res) {
+      const {
+        data: {
+          createAssets: { createdAssets, errors },
+        },
+      } = res || {};
 
-  const {
-    loading: allAssetsLoading,
-    error: allAssetsError,
-    data: allAssetsData,
-  } = useQuery(ALL_ASSETS_QUERY);
+      if (!createdAssets || !createdAssets.length) {
+        console.log("Assets weren't uploaded", errors);
+      }
+
+      allAssetsRefetch();
+      setIsUploading(false);
+    },
+  });
 
   const { posts = [] } = allPostsData || {};
   const { assets = [] } = allAssetsData || {};
@@ -142,6 +160,7 @@ export default function Dashboard() {
   };
 
   const onFilesUploaded = (e) => {
+    setIsUploading(true);
     createAssetsM({
       variables: {
         files: e.target.files,
@@ -207,27 +226,16 @@ export default function Dashboard() {
         </Pane>
       </Pane>
 
-      <Pane flex={1} display="flex" flexDirection="column" position="relative">
+      <Pane
+        flex={1}
+        display="flex"
+        flexDirection="column"
+        minHeight={0}
+        position="relative"
+      >
         <Heading flexShrink={1} size={700} marginY={majorScale(2)}>
           assets
         </Heading>
-        <Pane
-          position="absolute"
-          bottom={0}
-          left={0}
-          right={0}
-          background="blueTint"
-          padding={majorScale(2)}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          cursor="pointer"
-          zIndex={9}
-          onClick={onUploadClick}
-        >
-          <UploadIcon color="info" marginX={majorScale(1)} />
-          <Text color="#1070CA">Upload asset</Text>
-        </Pane>
         <Pane
           flex={1}
           elevation={2}
@@ -235,7 +243,31 @@ export default function Dashboard() {
           flexDirection="column"
           alignItems="center"
           overflowY="scroll"
+          paddingBottom="64px"
         >
+          <Pane
+            position="absolute"
+            bottom={0}
+            left={0}
+            right={0}
+            background={isUploading ? "tint2" : "blueTint"}
+            padding={majorScale(2)}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            cursor={isUploading ? "not-allowed" : "pointer"}
+            zIndex={9}
+            onClick={isUploading ? () => {} : onUploadClick}
+          >
+            {isUploading ? (
+              <Spinner size={20} />
+            ) : (
+              <>
+                <UploadIcon color="info" marginX={majorScale(1)} />
+                <Text color="#1070CA">Upload asset</Text>
+              </>
+            )}
+          </Pane>
           {allAssetsLoading ? (
             <Spinner />
           ) : (
