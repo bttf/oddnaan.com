@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server-koa";
-import resolvers from "src/graphql/public/resolvers";
-import typeDefs from "src/graphql/public/typeDefs";
+import resolvers from "./graphql/public/resolvers";
+import typeDefs from "./graphql/public/typeDefs";
 
 const context = () => ({});
 

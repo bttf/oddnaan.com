@@ -2,7 +2,6 @@
   "name": "api",
   "version": "1.0.0",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "create:migration": "db-migrate create --config config/database.json",
     "migrate": "db-migrate up --config config/database.json",

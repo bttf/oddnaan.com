@@ -2,8 +2,8 @@ import Koa from "koa";
 import Router from "@koa/router";
 import cors from "@koa/cors";
 import serve from "koa-static";
-import passport from "src/lib/auth/passport";
-import bearerMiddleware from "src/lib/auth/bearerMiddleware";
+import passport from "./lib/auth/passport";
+import bearerMiddleware from "./lib/auth/bearerMiddleware";
 import publicServer from "./publicServer";
 import privateServer from "./privateServer";
 

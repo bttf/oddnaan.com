@@ -1,4 +1,4 @@
-import { Post } from "src/data/models/Post";
+import { Post } from "../../data/models/Post";
 
 export default {
   bodyFormat(post: Post) {

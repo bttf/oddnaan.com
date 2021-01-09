@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { Post } from "src/data/models/Post";
+import { Post } from "../../../data/models/Post";
 
 export default async (_: any, args: { uuid: string }, context: any) => {
   const { uuid } = args;

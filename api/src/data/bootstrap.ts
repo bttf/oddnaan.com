@@ -22,4 +22,7 @@ createConnection({
   entities: [Asset, Post, User],
   synchronize: true,
   logging: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });

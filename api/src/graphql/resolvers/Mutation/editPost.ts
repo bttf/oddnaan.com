@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { Post } from "src/data/models/Post";
+import { Post } from "../../../data/models/Post";
 import { translateBodyFormatEnum } from "./createPost";
 
 export default async (

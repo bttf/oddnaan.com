@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { Asset } from "src/data/models/Asset";
+import { Asset } from "../../../data/models/Asset";
 
 export default async (
   _: any,

@@ -1,7 +1,7 @@
 import { getRepository } from "typeorm";
-import { User as UserModel } from "src/data/models/User";
-import { Post as PostModel } from "src/data/models/Post";
-import { Asset as AssetModel } from "src/data/models/Asset";
+import { User as UserModel } from "../../data/models/User";
+import { Post as PostModel } from "../../data/models/Post";
+import { Asset as AssetModel } from "../../data/models/Asset";
 
 enum AssetsOrderByEnum {
   NAME = "name",

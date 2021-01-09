@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { Post } from "src/data/models/Post";
+import { Post } from "../../../data/models/Post";
 
 export const translateBodyFormatEnum = (
   input: "MARKDOWN" | "JSX" | "HTML" | "TEXT"

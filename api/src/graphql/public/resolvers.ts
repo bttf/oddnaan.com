@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { getRepository } from "typeorm";
-import { User as UserModel } from "src/data/models/User";
-import { Post as PostModel } from "src/data/models/Post";
+import { User as UserModel } from "../../data/models/User";
+import { Post as PostModel } from "../../data/models/Post";
 
 const { ODDNAAN_AUTH_SECRET: AUTH_SECRET } = process.env;
 

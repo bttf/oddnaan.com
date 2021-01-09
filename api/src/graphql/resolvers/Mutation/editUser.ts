@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { getRepository } from "typeorm";
-import { User } from "src/data/models/User";
+import { User } from "../../../data/models/User";
 
 export default async (
   _: any,
