@@ -36,7 +36,7 @@ services:
       ODDNAAN_S3_ACCESS_KEY_ID: cool-key-id
       ODDNAAN_S3_ACCESS_KEY_SECRET: cool-key-secret
   db:
-    image: postgres
+    image: postgres:12.5-alpine
     environment:
       POSTGRES_PASSWORD: coolpassword
       POSTGRES_USER: oddnaan-app
