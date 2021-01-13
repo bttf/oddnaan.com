@@ -1,17 +1,19 @@
 import { useRef, useState } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import { useMutation, useQuery } from "@apollo/client";
 import { format } from "date-fns";
 import {
   AddIcon,
   Checkbox,
   Heading,
+  Link,
   majorScale,
   Pane,
   Spinner,
   Text,
   UploadIcon,
 } from "evergreen-ui";
+import { onLogout } from "../lib/auth";
 import { ALL_ASSETS_QUERY, ALL_POSTS_QUERY } from "../lib/graphql/queries";
 import { CREATE_ASSETS, EDIT_POST } from "../lib/graphql/mutations";
 
@@ -37,7 +39,7 @@ const PostRow = ({ post, index, onPublish }) => {
         alignItems="center"
         paddingX={majorScale(4)}
       >
-        <Link href={`/posts/${post.uuid}`}>{post.title}</Link>
+        <NextLink href={`/posts/${post.uuid}`}>{post.title}</NextLink>
       </Pane>
       <Pane flexShrink={1} paddingX={majorScale(1)}>
         <Checkbox
@@ -175,8 +177,13 @@ export default function Dashboard() {
       display="flex"
       flexDirection="column"
     >
-      <Pane flexShrink={1}>
-        <Heading size={900}>oddnaan.com</Heading>
+      <Pane flexShrink={1} display="flex" alignItems="baseline">
+        <Heading size={900} paddingRight={majorScale(1)}>
+          oddnaan.com
+        </Heading>
+        <Link cursor="pointer" onClick={onLogout}>
+          Log out
+        </Link>
       </Pane>
 
       <Pane
@@ -198,7 +205,7 @@ export default function Dashboard() {
           overflowY="scroll"
           paddingBottom="64px"
         >
-          <Link href="/posts/new">
+          <NextLink href="/posts/new">
             <Pane
               position="absolute"
               bottom={0}
@@ -215,7 +222,7 @@ export default function Dashboard() {
               <AddIcon color="success" marginX={majorScale(1)} />
               <Text color="#47B881">New post</Text>
             </Pane>
-          </Link>
+          </NextLink>
           {allPostsLoading ? (
             <Spinner />
           ) : (

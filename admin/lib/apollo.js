@@ -3,7 +3,6 @@ import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { LOCAL_STORAGE_TOKEN } from "./constants";
-import { onLogout } from "./auth";
 
 const authLink = setContext((_, { headers }) => {
   const token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN);
@@ -22,7 +21,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
     // Log out and redirect to login page if unauthorized
     if (isUnauthorized) {
-      onLogout();
+      window.localStorage.removeItem(LOCAL_STORAGE_TOKEN);
       window.location.href = "/login";
     }
 
