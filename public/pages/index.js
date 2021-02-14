@@ -1,5 +1,6 @@
 import Head from "next/head";
-import Header from "./Header";
+import Header from "../components/Header";
+import Television from "../components/Television";
 
 export default function Home() {
   return (
@@ -10,6 +11,10 @@ export default function Home() {
       </Head>
 
       <div className="py-4 px-8">
+        <div className="h-52 w-80 mb-8">
+          <Television />
+        </div>
+
         <Header />
       </div>
     </div>
