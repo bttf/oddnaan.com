@@ -9,8 +9,11 @@ const { ODDNAAN_AUTH_SECRET: AUTH_SECRET } = process.env;
 const Post = {
   // TODO Add type definition for `context`
   author: (post: PostModel, _args: any, context: any) => {
-    // TODO Confirm this actually works; not sure given TypeORM docs
     return post.author;
+  },
+
+  bodyFormat(post: PostModel) {
+    return post.bodyFormat.toUpperCase();
   },
 };
 
@@ -19,12 +22,18 @@ const Query = {
   post: (_source: any, args: { uuid: string }, context: any) => {
     const { uuid } = args;
     const postRepo = getRepository(PostModel);
-    return postRepo.findOne({ where: { uuid, isPublished: true } });
+    return postRepo.findOne({
+      where: { uuid, isPublished: true },
+      relations: ["author"],
+    });
   },
   // TODO Add type definition for `context`
   posts: (_source: any, _args: any, context: any) => {
     const postRepo = getRepository(PostModel);
-    return postRepo.find({ where: { isPublished: true } });
+    return postRepo.find({
+      where: { isPublished: true },
+      relations: ["author"],
+    });
   },
 };
 
@@ -87,4 +96,4 @@ const Mutation = {
   },
 };
 
-export default { Query, Mutation };
+export default { Query, Mutation, Post };

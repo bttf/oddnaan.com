@@ -7,7 +7,7 @@
     "migrate": "db-migrate up --config config/database.json",
     "start": "yarn migrate && node dist",
     "build": "tsc",
-    "dev": "ts-node-dev -r tsconfig-paths/register --debug src"
+    "dev": "ts-node-dev -r tsconfig-paths/register src"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",

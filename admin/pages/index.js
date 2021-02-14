@@ -88,6 +88,8 @@ export default function Dashboard() {
   const fileInputRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  // TODO Consolidate ALL_POSTS_QUERY and ALL_ASSETS_QUERY into one. They're curr-
+  // ently being utilized on the same page.
   const {
     loading: allPostsLoading,
     error: allPostsError,

@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+// TODO Consolidate ALL_POSTS_QUERY and ALL_ASSETS_QUERY into one. They're curr-
+// ently being utilized on the same page.
 export const ALL_POSTS_QUERY = gql`
   query AllPosts {
     posts {
