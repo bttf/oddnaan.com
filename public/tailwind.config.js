@@ -17,7 +17,11 @@ module.exports = {
         "sans-serif",
       ],
     },
-    extend: {},
+    extend: {
+      colors: {
+        "link-blue": "#bee1f4",
+      },
+    },
   },
   variants: {
     extend: {},
