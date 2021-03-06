@@ -6,6 +6,8 @@ export const GET_ALL_POSTS_QUERY = gql`
       uuid
       title
       createdAt
+      updatedAt
+      url
     }
   }
 `;

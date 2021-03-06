@@ -15,6 +15,9 @@ const Post = {
   bodyFormat(post: PostModel) {
     return post.bodyFormat.toUpperCase();
   },
+  url() {
+    return "/some-url-lol";
+  },
 };
 
 const Query = {
