@@ -38,7 +38,6 @@ services:
     environment:
       NODE_ENV: development
       ODDNAAN_PORT: 3000
-      ODDNAAN_PGHOST: db
       ODDNAAN_PGUSER: oddnaan-app
       ODDNAAN_PGDATABASE: oddnaan
       ODDNAAN_PGPASSWORD: coolpassword
@@ -47,6 +46,15 @@ services:
       ODDNAAN_S3_ENDPOINT: sfo2.digitaloceanspaces.com
       ODDNAAN_S3_ACCESS_KEY_ID: cool-key-id
       ODDNAAN_S3_ACCESS_KEY_SECRET: cool-key-secret
+      TYPEORM_CONNECTION: postgres
+      TYPEORM_HOST: db
+      TYPEORM_USERNAME: oddnaan-app
+      TYPEORM_PASSWORD: coolpassword
+      TYPEORM_DATABASE: oddnaan
+      TYPEORM_PORT: 5432
+      TYPEORM_SYNCHRONIZE: 'true'
+      TYPEORM_LOGGING: 'true'
+      TYPEORM_ENTITIES: /app/src/data/models/*.ts
   db:
     image: postgres:12.5-alpine
     environment:
