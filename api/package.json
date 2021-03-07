@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "create:migration": "db-migrate create --config config/database.json",
-    "migrate": "db-migrate up --config config/database.json",
+    "create:migration": "npx typeorm migration:create -n",
+    "migrate": "npx typeorm migration:run",
+    "migrate-dev": "ts-node ./node_modules/.bin/typeorm migration:run",
     "start": "yarn migrate && node dist",
     "build": "tsc",
     "dev": "ts-node-dev --poll -r tsconfig-paths/register src"
@@ -16,8 +17,6 @@
     "apollo-server-koa": "^2.19.0",
     "aws-sdk": "^2.820.0",
     "bcrypt": "^5.0.0",
-    "db-migrate": "^0.11.11",
-    "db-migrate-pg": "^1.2.2",
     "graphql-upload": "^11.0.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",

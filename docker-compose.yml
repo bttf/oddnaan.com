@@ -52,9 +52,11 @@ services:
       TYPEORM_PASSWORD: coolpassword
       TYPEORM_DATABASE: oddnaan
       TYPEORM_PORT: 5432
-      TYPEORM_SYNCHRONIZE: 'true'
       TYPEORM_LOGGING: 'true'
       TYPEORM_ENTITIES: /app/src/data/models/*.ts
+      TYPEORM_MIGRATIONS: /app/src/data/migrations/*.ts
+      TYPEORM_MIGRATIONS_DIR: /app/src/data/migrations
+      TYPEORM_MIGRATIONS_TABLE_NAME: migrations
   db:
     image: postgres:12.5-alpine
     environment:
