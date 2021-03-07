@@ -38,10 +38,6 @@ services:
     environment:
       NODE_ENV: development
       ODDNAAN_PORT: 3000
-      ODDNAAN_PGUSER: oddnaan-app
-      ODDNAAN_PGDATABASE: oddnaan
-      ODDNAAN_PGPASSWORD: coolpassword
-      ODDNAAN_PGPORT: 5432
       ODDNAAN_AUTH_SECRET: m0n4l!s4
       ODDNAAN_S3_ENDPOINT: sfo2.digitaloceanspaces.com
       ODDNAAN_S3_ACCESS_KEY_ID: cool-key-id
