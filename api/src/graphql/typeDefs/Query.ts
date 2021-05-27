@@ -32,6 +32,7 @@ export default gql`
     isPublished: Boolean!
     bodyFormat: PostBodyFormatEnum!
     author: User!
+    url: String!
   }
 
   enum AssetsOrderByEnum {

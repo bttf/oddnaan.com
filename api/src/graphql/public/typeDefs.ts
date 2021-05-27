@@ -23,6 +23,7 @@ const Query = gql`
     isPublished: Boolean!
     bodyFormat: PostBodyFormatEnum!
     author: User!
+      url: String!
   }
 
   type Query {

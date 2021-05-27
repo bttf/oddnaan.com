@@ -1,6 +1,6 @@
-import { ApolloClient, createHttpLink } from "@apollo/client";
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
-export default client = new ApolloClient({
+export default new ApolloClient({
   ssrMode: typeof window === "undefined",
   link: createHttpLink({
     uri: process.env.NEXT_PUBLIC_ODDNAAN_PUBLIC_GRAPHQL_ENDPOINT,
