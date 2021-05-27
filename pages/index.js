@@ -8,9 +8,10 @@ export default function Home() {
         <div className="fg">oddnaan.com</div>
         {range(12).map((i) => (
           <div
+            key={i}
             className="shadow"
             style={{
-              animationDelay: `${(2 / 12) * i}s`,
+              animationDelay: `${(3 / 12) * i}s`,
               color: `hsl(${i * 30}, 58%, 50%)`,
             }}
           >
