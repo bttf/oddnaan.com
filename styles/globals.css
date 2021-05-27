@@ -1,0 +1,70 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  position: relative;
+  font-weight: bold;
+  font-size: 12rem;
+  color: transparent;
+}
+
+.title .fg {
+  position: absolute;
+  color: white;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+
+.title .shadow {
+  position: absolute;
+  color: red;
+  top: 0;
+  left: 0;
+  z-index: 9;
+
+  transition: all 500ms;
+
+  animation-name: rainbow;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rainbow {
+  0% {
+    opacity: 1;
+  }
+  66% {
+    opacity: 0;
+  }
+  75% {
+    top: 32px;
+    left: 32px;
+  }
+  100% {
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+}
